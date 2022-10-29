@@ -9,10 +9,13 @@ import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.RobotContainer;
 
 public class ShooterSubsystem extends SubsystemBase {
   /** Creates a new Shooter. */
-  TalonFX shooterMotor; 
+  TalonFX shooterMotor;
+  
+  RobotContainer robotContainer = new RobotContainer();
 
   public ShooterSubsystem() {
     shooterMotor = new TalonFX(Constants.SHOOTER_CHANNEL);
@@ -23,7 +26,22 @@ public class ShooterSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 
-  public void spinShooter(double speed) {
+  public void spinShooter() { //double speed
+    double r_joyStickY = robotContainer.r_joystick.getY();
+    double speed= 0;
+
+    if (r_joyStickY > 0.5) {
+      speed = 0.5;
+    }
+    if (0.5 > r_joyStickY & r_joyStickY > 0) {
+      speed = 0.2;
+    }
+    if (r_joyStickY < -0.5) {
+      speed = -0.5;
+    }
+    if (-0.5 < r_joyStickY & r_joyStickY < 0) {
+      speed = -0.2;
+    }
     shooterMotor.set(ControlMode.PercentOutput, speed);
   }
 }
